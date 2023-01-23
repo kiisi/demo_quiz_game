@@ -24,7 +24,7 @@ const submit = document.querySelector("#submit")
 
 function QuizBegin() {
 
-    let timeCount = 10
+    let timeCount = 60
     let score = 0
 
     function timeIntervalFunc() {
@@ -58,6 +58,8 @@ function QuizBegin() {
                 score += 20
                 feedback.textContent = "Correct!"
             } else {
+                // deducts 10 secs from time
+                timeCount -= 10
                 //Plays audio for incorrect answer chosen
                 let audio = new Audio()
                 audio.src = "incorrect.wav"
