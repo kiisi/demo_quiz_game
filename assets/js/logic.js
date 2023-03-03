@@ -28,7 +28,7 @@ function QuizBegin() {
     let score = 0
 
     function timeIntervalFunc() {
-        time.innerHTML = timeCount
+        time.textContent = timeCount
         if (timeCount > 0) {
             timeCount--
         } else {
@@ -39,6 +39,10 @@ function QuizBegin() {
     }
 
     const timeInterval = setInterval(timeIntervalFunc, 1000)
+
+    const clearIntervalFunc = () =>{
+        clearInterval(timeInterval)
+    }
 
     const _questions = new Questions()
 
@@ -56,7 +60,7 @@ function QuizBegin() {
                 audio.play()
                 //Adds 20 to the score for correct answer chosen
                 score += 20
-                feedback.textContent = "Correct!"
+                feedback.innerHTML = `<div class="success-color">Correct!</div>`
             } else {
                 // deducts 10 secs from time
                 timeCount -= 10
@@ -64,7 +68,7 @@ function QuizBegin() {
                 let audio = new Audio()
                 audio.src = "incorrect.wav"
                 audio.play()
-                feedback.textContent = "Wrong!"
+                feedback.innerHTML = `<div class="error-color">Wrong!</div>`
             }
             _questions.nextQuestion()
             updateQuiz()
@@ -77,7 +81,7 @@ function QuizBegin() {
             questionTitle.innerHTML = _questions.getQuestion()
             document.querySelectorAll("#choices button").forEach((btn, index) => {
                 btn.dataset.choice = _questions.getQuestionOptions()[index]
-                btn.textContent = _questions.getQuestionOptions()[index]
+                btn.textContent = `${index + 1}. ${_questions.getQuestionOptions()[index]}`
             })
         }else{
             questions.classList.add("hide")
@@ -91,6 +95,10 @@ function QuizBegin() {
     }
 
     function QuizEnded(){
+        // clear timer when quiz ends
+        clearIntervalFunc()
+        // reset time to default, 0
+        document.querySelector("#time").textContent = '0'
         questions.classList.add("hide")
         endscreen.classList.remove("hide")
 
